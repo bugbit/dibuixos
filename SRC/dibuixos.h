@@ -2,6 +2,7 @@
 
 #define	__DIBUIXOS_H
 
+#include <graphics.h>
 #include <stdio.h>
 
 #pragma hdrstop
