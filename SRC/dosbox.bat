@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\DOSBox-0.74\DOSBox.exe" -userconf -noconsole -c "c:\windows\win p:\bc45\bin\bcw O:\dibuixos\SRC\dibuixos.ide"

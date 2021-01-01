@@ -1,0 +1,9 @@
+DOSBox version SVN-lfn
+Copyright 2002-2017 DOSBox Team, published under GNU GPL.
+Long File Name (LFN), mouse copy/paste and other support, by Wengier, 2014-2017.
+---
+CONFIG:Loading primary settings from config file C:\Users\familia\AppData\Local\DOSBox\dosbox-SVN.conf
+MIDI: Opened device:win32
+DOS keyboard layout loaded with main language code SP for layout sp
+DOSBox has switched to max cycles, because of the setting: cycles=auto.
+If the game runs too fast, try a fixed cycles amount in DOSBox's options.
