@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <graphics.h>
 #include "SVGA256.H"
+#include "TWK256.H"
 
 #pragma hdrstop
 
@@ -23,7 +24,7 @@
 
 typedef int bool;
 
-extern char dib_error[128];
+//extern char dib_error[128];
 
 bool check386();
 int seterror(char *fmt,...);

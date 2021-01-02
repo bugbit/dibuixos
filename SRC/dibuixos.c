@@ -1,7 +1,7 @@
 #include "dibuixos.h"
 
-char dib_error[128];
-int svgagmode=-1;
+static char dib_error[128];
+int svga256gdriver,Twk256gdriver,svgagmode=-1;
 
 int seterror(char *fmt,...)
 {
@@ -10,6 +10,13 @@ int seterror(char *fmt,...)
   
 	vsprintf (dib_error,fmt, args);
 	va_end (args);
+	
+	return RET_ERROR;
+}
+
+int grseterror(int errorcode)
+{
+	strncpy(dib_error,grapherrormsg(errorcode),sizeof(dib_error)); 
 	
 	return RET_ERROR;
 }
@@ -28,6 +35,33 @@ static int check()
 	if (errorcode!=grOk || gdriver!=VGA)
 		return seterror("VGA or compatible graphics adapter required.");
 
+	svga256gdriver= installuserdriver("Svga256",NULL);
+	Twk256gdriver= installuserdriver("Twk256",NULL);
+
+	gdriver= svga256gdriver;
+	gmode=SVGA640x400x256;
+
+	initgraph(&gdriver,&gmode,"");
+
+	errorcode=graphresult();
+
+	if (errorcode!=grOk)
+		return grseterror(errorcode);
+
+	gdriver= Twk256gdriver;
+	gmode=TWK320x400x256;
+
+   closegraph();
+
+	initgraph(&gdriver,&gmode,"");
+
+	errorcode=graphresult();
+
+	if (errorcode!=grOk)
+		return grseterror(errorcode);
+
+	closegraph();
+
 	return RET_SUCESS;
 }
 
@@ -35,10 +69,10 @@ int dib_initgraph(int mode)
 {
 	int gdriver=DETECT,gmode, errorcode;
 
-	if (svgamode==mode)
-			return RET_SUCESS;
+	//if (svgamode==mode)
+	//		return RET_SUCESS;
 
-	installuserdriver("Svga256",DetectVGA256);
+
 }
 
 int main()
@@ -46,5 +80,7 @@ int main()
 	int ret=check();
 
 	if (ret==RET_ERROR)
-		printf("%s\a\n",dib_error);	
+		printf("%s\a\n",dib_error);
+
+	getchar();
 }

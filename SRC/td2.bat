@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\DOSBox-0.74\DOSBox.exe" -userconf -noconsole -c "O:\dibuixos\src\td22.bat"
