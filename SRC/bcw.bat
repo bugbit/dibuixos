@@ -1,0 +1,1 @@
+p:\bc45\bin\bcw O:\dibuixos\SRC\dibuixos.ide
