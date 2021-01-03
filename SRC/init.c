@@ -46,5 +46,13 @@ static int check()
 
 int init()
 {
-	return check();
+	int ret=check();
+
+	if (issucess(ret))
+	{
+		keyb9_oldint=getvect(0x9);
+		setvect(9,keyb9_int);
+	}
+
+   return ret;
 }

@@ -2,12 +2,11 @@
 
 #define	__DIBUIXOS_H
 
-//#include <dos.h> 
+#include <dos.h>
 #include <stdarg.h>
-#include <stdio.h>  
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <conio.h>
 #include <graphics.h>
 #include "SVGA256.H"
 #include "TWK256.H"
@@ -29,11 +28,15 @@ typedef int bool;
 
 //extern char dib_error[128];
 extern int svga256gdriver,Twk256gdriver;
+extern void interrupt (*keyb9_oldint)();
+extern bool canceled;
 
 bool check386();
 int seterror(char *fmt,...);
 int grseterror(int errorcode);
+void interrupt keyb9_int();
+void dib_initgraph(int gdriver,int gmode);
 int init();
-bool cancel();
+int presentacion();
 
 #endif
