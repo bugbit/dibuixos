@@ -1,86 +1,38 @@
-#include "dibuixos.h"
+#ifndef	__DIBUIXOS_H
 
-static char dib_error[128];
-int svga256gdriver,Twk256gdriver,svgagmode=-1;
+#define	__DIBUIXOS_H
 
-int seterror(char *fmt,...)
-{
-	va_list args;
-	va_start (args, fmt);
-  
-	vsprintf (dib_error,fmt, args);
-	va_end (args);
-	
-	return RET_ERROR;
-}
+//#include <dos.h> 
+#include <stdarg.h>
+#include <stdio.h>  
+#include <stdlib.h>
+#include <string.h>
+#include <graphics.h>
+#include "SVGA256.H"
+#include "TWK256.H"
 
-int grseterror(int errorcode)
-{
-	strncpy(dib_error,grapherrormsg(errorcode),sizeof(dib_error)); 
-	
-	return RET_ERROR;
-}
+#pragma hdrstop
 
-static int check()
-{
-	int gdriver=DETECT,gmode, errorcode;
+#define	TRUE	1
+#define	FALSE	0   
 
-//	if (!check386())
-//		return seterror("A 386 or higher processor required.");
+#define	RET_SUCESS		0
+#define	RET_ERROR		-1
+#define	RET_EXIT		-2
+#define	RET_CANCEL		-3
 
-	detectgraph(&gdriver,&gmode);
+#define	issucess(r)		(r>=RET_SUCESS)
+#define	isnosucess(r)	(r<RET_SUCESS)
 
-	errorcode=graphresult();
+typedef int bool;
 
-	if (errorcode!=grOk || gdriver!=VGA)
-		return seterror("VGA or compatible graphics adapter required.");
+//extern char dib_error[128];
+extern int svga256gdriver,Twk256gdriver;
 
-	svga256gdriver= installuserdriver("Svga256",NULL);
-	Twk256gdriver= installuserdriver("Twk256",NULL);
+bool check386();
+int seterror(char *fmt,...);
+int grseterror(int errorcode);
+int init();
+bool cancel();
 
-	gdriver= svga256gdriver;
-	gmode=SVGA640x400x256;
-
-	initgraph(&gdriver,&gmode,"");
-
-	errorcode=graphresult();
-
-	if (errorcode!=grOk)
-		return grseterror(errorcode);
-
-	gdriver= Twk256gdriver;
-	gmode=TWK320x400x256;
-
-   closegraph();
-
-	initgraph(&gdriver,&gmode,"");
-
-	errorcode=graphresult();
-
-	if (errorcode!=grOk)
-		return grseterror(errorcode);
-
-	closegraph();
-
-	return RET_SUCESS;
-}
-
-int dib_initgraph(int mode)
-{
-	int gdriver=DETECT,gmode, errorcode;
-
-	//if (svgamode==mode)
-	//		return RET_SUCESS;
-
-
-}
-
-int main()
-{
-	int ret=check();
-
-	if (ret==RET_ERROR)
-		printf("%s\a\n",dib_error);
-
-	getchar();
-}
+#endif

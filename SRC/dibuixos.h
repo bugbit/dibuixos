@@ -3,8 +3,11 @@
 #define	__DIBUIXOS_H
 
 //#include <dos.h> 
-#include <stdarg.h>  
-#include <stdio.h>
+#include <stdarg.h>
+#include <stdio.h>  
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
 #include <graphics.h>
 #include "SVGA256.H"
 #include "TWK256.H"
@@ -25,8 +28,12 @@
 typedef int bool;
 
 //extern char dib_error[128];
+extern int svga256gdriver,Twk256gdriver;
 
 bool check386();
 int seterror(char *fmt,...);
+int grseterror(int errorcode);
+int init();
+bool cancel();
 
 #endif
