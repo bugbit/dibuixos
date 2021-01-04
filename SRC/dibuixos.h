@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <graphics.h>
+#include "SVGAUTIL.h"
 #include "SVGA256.H"
 #include "TWK256.H"
 

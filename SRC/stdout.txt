@@ -2,6 +2,8 @@ DOSBox version SVN-lfn
 Copyright 2002-2017 DOSBox Team, published under GNU GPL.
 Long File Name (LFN), mouse copy/paste and other support, by Wengier, 2014-2017.
 ---
+SDL_Init: Starting up with SDL windib video driver.
+          Try to update your video card and directx drivers!
 CONFIG:Loading primary settings from config file C:\Users\familia\AppData\Local\DOSBox\dosbox-SVN.conf
 MIDI: Opened device:win32
 DOS keyboard layout loaded with main language code SP for layout sp
