@@ -2,17 +2,18 @@
 
 static MemReal pal;
 
-static bool pre_init()
+static int pre_init()
 {
-	if (!mrealloc(&pal,256))
-		return FALSE;
+	int ret=mrealloc(&pal,256);
 
-	dib_initgraph(svga256gdriver,SVGA640x400x256);
+	if (issucess(ret))
+	{
+		dib_initgraph(svga256gdriver,SVGA640x400x256);
 
-	if (!getvgapalette256(&pal))
-		return FALSE;
+		ret=getvgapalette256(&pal);
+	}
 
-	return TRUE;
+	return ret;
 }
 
 static void pre_deinit()
@@ -24,9 +25,9 @@ static void pre_deinit()
 
 int presentacion()
 {
-	bool ok=pre_init();
+	int ret=pre_init();
 
-	if (ok)
+	if (issucess(ret))
 	{
 		setrgbpalette(15,200,200,200);
 		setcolor(15);
@@ -37,7 +38,7 @@ int presentacion()
 		while (!canceled);
 	}
 
-	pre_deinit()
+	pre_deinit();
 
-	returnforbool(ok);
+	return ret;
 }

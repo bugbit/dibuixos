@@ -15,7 +15,7 @@
 #pragma hdrstop
 
 #define	TRUE	1
-#define	FALSE	0   
+#define	FALSE	0
 
 #define	RET_SUCESS		0
 #define	RET_ERROR		-1
@@ -24,7 +24,6 @@
 
 #define	issucess(r)		(r>=RET_SUCESS)
 #define	isnosucess(r)	(r<RET_SUCESS)
-#define	returnforbool(r)	return (r) ? RET_SUCESS : (iscanceled) ? RET_CANCEL : RET_ERROR
 
 #define	mrealloc(mr,size)	mreallocpar(mr,size >> 4)
 
@@ -64,9 +63,9 @@ extern void interrupt (*keyb9_oldint)();
 extern bool canceled;
 
 bool check386();
-bool _pascal mreallocpar(MemReal *mr,int paragraphs);
-bool _pascal mrfree(MemReal *mr);
-bool _pascal simint(SimInt *sim,int interruptNumber);
+int _pascal mreallocpar(MemReal *mr,int paragraphs);
+int _pascal mrfree(MemReal *mr);
+int _pascal simint(SimInt *sim,int interruptNumber);
 int seterror(char *fmt,...);
 int grseterror(int errorcode);
 void interrupt keyb9_int();
@@ -75,8 +74,8 @@ void dib_closegraph();
 
 // svgautil
 
-bool pascal getvgapalette256(MemReal *mr);
-bool pascal setvgapalette256(MemReal *mr);
+int pascal getvgapalette256(MemReal *mr);
+int pascal setvgapalette256(MemReal *mr);
 
 int init();
 int presentacion();

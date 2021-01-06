@@ -17,7 +17,7 @@ bool check386()
 }
 
 // paragraphs = Number of paragraphs (16 bytes blocks)
-bool _pascal mreallocpar(MemReal *mr,int paragraphs)
+int _pascal mreallocpar(MemReal *mr,int paragraphs)
 {
 	int seg,selector;
 
@@ -32,7 +32,7 @@ bool _pascal mreallocpar(MemReal *mr,int paragraphs)
 	mr->selector=0;
 	mr->ptr=NULL;
 
-	return FALSE;
+	return seterror("Not enough memory");
 
 allocdoscok:
 	seg=_AX;
@@ -41,15 +41,15 @@ allocdoscok:
 	mr->selector=selector;
 	mr->ptr=MK_FP(selector,0);
 
-	return TRUE;
+	return RET_SUCESS;
 }
 
-bool _pascal mrfree(MemReal *mr)
+int _pascal mrfree(MemReal *mr)
 {
 	int selector=mr->selector;
 
 	if (!selector)
-   	return FALSE;
+		return RET_SUCESS;
 
 	// Free DOS Memory Block
 	asm {
@@ -59,16 +59,16 @@ bool _pascal mrfree(MemReal *mr)
 		jnc freedoscok
 	}
 
-	return FALSE;
+	return seterror("No free real memory");
 freedoscok:
 	mr->realseg=0;
 	mr->selector=0;
-   mr->ptr=NULL;
+	mr->ptr=NULL;
 
-	return TRUE;
+	return RET_SUCESS;
 }
 
-bool _pascal simint(SimInt *sim,int interruptNumber)
+int _pascal simint(SimInt *sim,int interruptNumber)
 {
 	asm {
 		mov ax,0300h
@@ -80,9 +80,9 @@ bool _pascal simint(SimInt *sim,int interruptNumber)
 		jnc simintok
 	}
 
-	return FALSE;
+	return seterror("No execute real interrupt %d",interruptNumber);
 simintok:
 
-	return TRUE;
+	return RET_SUCESS
 }
 
