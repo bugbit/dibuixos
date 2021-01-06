@@ -9,7 +9,6 @@
 #include <string.h>
 #include <mem.h>
 #include <graphics.h>
-#include "SVGAUTIL.h"
 #include "SVGA256.H"
 #include "TWK256.H"
 
@@ -25,6 +24,9 @@
 
 #define	issucess(r)		(r>=RET_SUCESS)
 #define	isnosucess(r)	(r<RET_SUCESS)
+#define	returnforbool(r)	return (r) ? RET_SUCESS : (iscanceled) ? RET_CANCEL : RET_ERROR
+
+#define	mrealloc(mr,size)	mreallocpar(mr,size >> 4)
 
 typedef int bool;
 
@@ -62,12 +64,20 @@ extern void interrupt (*keyb9_oldint)();
 extern bool canceled;
 
 bool check386();
-bool _pascal mrealalloc(MemReal *mr,int paragraphs);
+bool _pascal mreallocpar(MemReal *mr,int paragraphs);
+bool _pascal mrfree(MemReal *mr);
 bool _pascal simint(SimInt *sim,int interruptNumber);
 int seterror(char *fmt,...);
 int grseterror(int errorcode);
 void interrupt keyb9_int();
 void dib_initgraph(int gdriver,int gmode);
+void dib_closegraph();
+
+// svgautil
+
+bool pascal getvgapalette256(MemReal *mr);
+bool pascal setvgapalette256(MemReal *mr);
+
 int init();
 int presentacion();
 

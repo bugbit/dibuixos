@@ -1,7 +1,7 @@
 #include "dibuixos.h"
 
 static char dib_error[128];
-int svga256gdriver,Twk256gdriver,svagdriver=-1,svgagmode=-1;
+int svga256gdriver,Twk256gdriver,svgagdriver=-1,svgagmode=-1;
 bool canceled;
 void interrupt (*keyb9_oldint)()=NULL;
 int maxx,maxy;
@@ -27,8 +27,18 @@ int grseterror(int errorcode)
 void dib_initgraph(int gdriver,int gmode)
 {
 	initgraph(&gdriver,&gmode,"");
+	svgagdriver=gdriver;
+	svgagmode=gmode;
 	maxx=getmaxx();
-   maxy=getmaxy();
+	maxy=getmaxy();
+}
+
+void dib_closegraph()
+{
+	if (svgagdriver>=0)
+		closegraph();
+	svgagdriver=-1;
+	svgagmode=-1;
 }
 
 void interrupt keyb9_int()
@@ -39,10 +49,10 @@ void interrupt keyb9_int()
 		keyb9_oldint();
 }
 
-static void DeInit()
+static void deinit()
 {
-	if (svagdriver>=0)
-		closegraph();
+	if (svgagdriver>=0)
+		dib_closegraph();
 	if (keyb9_oldint)
 		setvect(9,keyb9_oldint);
 }
@@ -59,7 +69,7 @@ int main()
 
 	while (!canceled);
 
-	DeInit();
+	deinit();
 
 	return EXIT_SUCCESS;
 }

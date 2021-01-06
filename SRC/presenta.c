@@ -1,28 +1,43 @@
 #include "dibuixos.h"
 
-//static DacPalette256 pal;
 static MemReal pal;
+
+static bool pre_init()
+{
+	if (!mrealloc(&pal,256))
+		return FALSE;
+
+	dib_initgraph(svga256gdriver,SVGA640x400x256);
+
+	if (!getvgapalette256(&pal))
+		return FALSE;
+
+	return TRUE;
+}
+
+static void pre_deinit()
+{
+	mrfree(&pal);
+
+	dib_closegraph();
+}
 
 int presentacion()
 {
-	SimInt si;
-	char *x;
+	bool ok=pre_init();
 
-	if (!mrealalloc(&pal,256/16))
-		return RET_ERROR;
+	if (ok)
+	{
+		setrgbpalette(15,200,200,200);
+		setcolor(15);
+		outtextxy(getmaxx()/2,getmaxy()/2,"Helloword");
+		setvgapalette256(&pal);
+		outtextxy(getmaxx()/2,getmaxy()/2,"Helloword");
 
-	dib_initgraph(svga256gdriver,SVGA640x400x256);
-	//getvgapalette256(&pal);
-	memset(&si,0,sizeof si);
-	si.eax=0x1017;
-	si.ecx=256;
-	si.es=pal.realseg;
-	if (!simint(&si,0x10))
-		return RET_ERROR;
+		while (!canceled);
+	}
 
-	x=(char *) pal.ptr;
+	pre_deinit()
 
-	closegraph();
-
-	return RET_SUCESS;
+	returnforbool(ok);
 }
