@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <mem.h>
 #include <graphics.h>
 #include "SVGAUTIL.h"
 #include "SVGA256.H"
@@ -27,12 +28,42 @@
 
 typedef int bool;
 
+typedef struct _MemReal
+{
+	unsigned int realseg;
+	unsigned int selector;
+   void far *ptr;
+} MemReal;
+
+typedef struct _SimInt
+{
+	unsigned long edi;
+	unsigned long esi;
+	unsigned long ebp;
+	unsigned long esp;
+	unsigned long ebx;
+	unsigned long edx;
+	unsigned long ecx;
+	unsigned long eax;
+	unsigned int flags;
+	unsigned int es;
+	unsigned int ds;
+	unsigned int fs;
+	unsigned int gs;
+	unsigned int ip;
+	unsigned int cs;
+	unsigned int sp;
+	unsigned int ss;
+} SimInt;
+
 //extern char dib_error[128];
 extern int svga256gdriver,Twk256gdriver;
 extern void interrupt (*keyb9_oldint)();
 extern bool canceled;
 
 bool check386();
+bool _pascal mrealalloc(MemReal *mr,int paragraphs);
+bool _pascal simint(SimInt *sim,int interruptNumber);
 int seterror(char *fmt,...);
 int grseterror(int errorcode);
 void interrupt keyb9_int();
