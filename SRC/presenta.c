@@ -1,6 +1,14 @@
 #include "dibuixos.h"
 
+#define text1_lines sizeof(*text1)/sizeof(*text1)
+
 static MemReal pal;
+static char *text1[]=
+{
+	"A",
+	"Microbyt",
+   "production"
+};
 
 static int pre_init()
 {
@@ -16,6 +24,19 @@ static int pre_init()
 	return ret;
 }
 
+static void presen1()
+{
+	int h;
+	int y;
+
+	setcolor(15);
+	settextjustify(CENTER_TEXT,CENTER_TEXT);
+	settextstyle(SIMPLEX_FONT,HORIZ_DIR,4);
+	h=textheight("A");
+	y=maxy-(text1_lines*h)/2;
+   outtextxy(maxx/2,maxy/2,"A");
+}
+
 static void pre_deinit()
 {
 	mrfree(&pal);
@@ -29,11 +50,14 @@ int presentacion()
 
 	if (issucess(ret))
 	{
+		presen1();
+		/*
 		setrgbpalette(15,200,200,200);
 		setcolor(15);
 		outtextxy(getmaxx()/2,getmaxy()/2,"Helloword");
 		setvgapalette256(&pal);
-		outtextxy(getmaxx()/2,getmaxy()/2,"Helloword");
+		//outtextxy(getmaxx()/2,getmaxy()/2,"Helloword");
+		*/
 
 		while (!canceled);
 	}

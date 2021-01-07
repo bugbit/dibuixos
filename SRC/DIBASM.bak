@@ -83,6 +83,6 @@ int _pascal simint(SimInt *sim,int interruptNumber)
 	return seterror("No execute real interrupt %d",interruptNumber);
 simintok:
 
-	return RET_SUCESS
+	return RET_SUCESS;
 }
 

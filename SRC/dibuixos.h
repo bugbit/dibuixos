@@ -59,6 +59,7 @@ typedef struct _SimInt
 
 //extern char dib_error[128];
 extern int svga256gdriver,Twk256gdriver;
+extern int maxx,maxy;
 extern void interrupt (*keyb9_oldint)();
 extern bool canceled;
 
