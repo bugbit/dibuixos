@@ -4,6 +4,7 @@ void WaitForRetrace()
 {
 _waitVRnz:
 	asm {
+	   mov dx,3dah
 		in	al,dx
 		test	al,8
 		jnz	_waitVRnz

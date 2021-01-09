@@ -4,7 +4,7 @@ static char dib_error[128];
 int svga256gdriver,Twk256gdriver,svgagdriver=-1,svgagmode=-1;
 bool canceled;
 void interrupt (*keyb9_oldint)()=NULL;
-int maxx,maxy;
+int maxx,maxy,medx,medy;
 
 int seterror(char *fmt,...)
 {
@@ -26,11 +26,15 @@ int grseterror(int errorcode)
 
 void dib_initgraph(int gdriver,int gmode)
 {
+	if (svgagdriver>=0)
+		closegraph();
 	initgraph(&gdriver,&gmode,"");
 	svgagdriver=gdriver;
 	svgagmode=gmode;
 	maxx=getmaxx();
 	maxy=getmaxy();
+	medx=maxx/2;
+	medy=maxy/2;
 }
 
 void dib_closegraph()

@@ -9,6 +9,8 @@ static char *text1[]=
 	NULL
 };
 
+static char *text2="My First Demo";
+
 static int pre_init()
 {
 	int ret=mrealloc(&pal,sizeof(DacPalette256));
@@ -35,7 +37,7 @@ static int presen1()
 	settextstyle(SIMPLEX_FONT,HORIZ_DIR,8);
 	for(htext=0,text=text1;*text;)
 	  htext +=textheight(*text++);
-	x=maxx/2;
+	x=medx;
 	y=(maxy-htext)/2;
 	for (text=text1;*text;text++)
 	{
@@ -56,11 +58,37 @@ static int presen1()
 	return RET_SUCESS;
 }
 
+static int presen2()
+{
+	char titulo[sizeof(text2)+1];
+	int len=strlen(text2),k,y,by,j;
+
+	setwritemode(XOR_PUT);
+	cleardevice();
+	setrgbpalette(15,63,63,63);
+	for (y=medy+((medy-42) >> 1),k=1;k<=len;k++)
+	{
+		strncpy(titulo,text2,(by=(k >> 1)+(k & 1)));
+		strcpy(titulo+by,text2+len-(k >> 1));
+		outtextxy(medx,medy,titulo);
+
+		for(j=10;j-->0;)
+		{
+			WaitForRetrace();
+			if (canceled)
+				return RET_CANCEL;
+		}
+		outtextxy(medx,medy,titulo);
+	}
+   outtextxy(medx,medy,text2);
+	setwritemode(COPY_PUT);
+
+	return RET_SUCESS;
+}
+
 static void pre_deinit()
 {
 	mrfree(&pal);
-
-	dib_closegraph();
 }
 
 int presentacion()
@@ -69,7 +97,10 @@ int presentacion()
 
 	if (issucess(ret))
 	{
-		ret=presen1();
+		if (issucess((ret=presen1())))
+		{
+			ret=presen2();
+		}
 		/*
 		setrgbpalette(15,200,200,200);
 		setcolor(15);
