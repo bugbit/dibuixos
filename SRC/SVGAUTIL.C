@@ -1,5 +1,28 @@
 #include "dibuixos.h"
 
+void WaitForRetrace()
+{
+_waitVRnz:
+	asm {
+		in	al,dx
+		test	al,8
+		jnz	_waitVRnz
+	}
+_waitVRz:
+	asm {
+		in	al,dx
+		test	al,8
+		jz	_waitVRz
+	}
+}
+
+/* Getvgapalette256 gets the entire 256 color palette */
+/* PalBuf contains RGB values for all 256 colors      */
+/* R,G,B values range from 0 to 63	              */
+/* Usage:					      */
+/*  DacPalette256 dac256;			      */
+/*						      */
+/* getvgapalette256(&dac256);			      */
 bool pascal getvgapalette256(MemReal *mr)
 {
 	SimInt si;
@@ -14,6 +37,13 @@ bool pascal getvgapalette256(MemReal *mr)
 	return TRUE;
 }
 
+/* Setvgapalette256 sets the entire 256 color palette */
+/* PalBuf contains RGB values for all 256 colors      */
+/* R,G,B values range from 0 to 63	              */
+/* Usage:					      */
+/*  DacPalette256 dac256;			      */
+/*						      */
+/* setvgapalette256(&dac256);			      */
 bool pascal setvgapalette256(MemReal *mr)
 {
 	SimInt si;

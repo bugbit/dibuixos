@@ -1,18 +1,17 @@
 #include "dibuixos.h"
 
-#define text1_lines sizeof(*text1)/sizeof(*text1)
-
 static MemReal pal;
 static char *text1[]=
 {
 	"A",
 	"Microbyt",
-   "production"
+	"production",
+	NULL
 };
 
 static int pre_init()
 {
-	int ret=mrealloc(&pal,256);
+	int ret=mrealloc(&pal,sizeof(DacPalette256));
 
 	if (issucess(ret))
 	{
@@ -24,17 +23,37 @@ static int pre_init()
 	return ret;
 }
 
-static void presen1()
+static int presen1()
 {
-	int h;
-	int y;
+	char **text;
+	int htext;
+	int y,x;
 
+	setrgbpalette(15,0,0,0);
 	setcolor(15);
 	settextjustify(CENTER_TEXT,CENTER_TEXT);
-	settextstyle(SIMPLEX_FONT,HORIZ_DIR,4);
-	h=textheight("A");
-	y=maxy-(text1_lines*h)/2;
-   outtextxy(maxx/2,maxy/2,"A");
+	settextstyle(SIMPLEX_FONT,HORIZ_DIR,8);
+	for(htext=0,text=text1;*text;)
+	  htext +=textheight(*text++);
+	x=maxx/2;
+	y=(maxy-htext)/2;
+	for (text=text1;*text;text++)
+	{
+		outtextxy(x,y,*text);
+		y +=textheight(*text);
+	}
+	for(x=0;x<=63;x++)
+		setrgbpalette(15,x,x,x);
+	for(x=0;x<=63;x++)
+	{
+		if (canceled)
+			return RET_CANCEL;
+		WaitForRetrace();
+		}
+	for(x=63;x>=0;x--)
+		setrgbpalette(15,x,x,x);
+
+	return RET_SUCESS;
 }
 
 static void pre_deinit()
@@ -50,7 +69,7 @@ int presentacion()
 
 	if (issucess(ret))
 	{
-		presen1();
+		ret=presen1();
 		/*
 		setrgbpalette(15,200,200,200);
 		setcolor(15);

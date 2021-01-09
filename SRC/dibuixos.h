@@ -57,6 +57,8 @@ typedef struct _SimInt
 	unsigned int ss;
 } SimInt;
 
+typedef unsigned char DacPalette256[256][3];
+
 //extern char dib_error[128];
 extern int svga256gdriver,Twk256gdriver;
 extern int maxx,maxy;
@@ -75,7 +77,24 @@ void dib_closegraph();
 
 // svgautil
 
+void WaitForRetrace();
+
+/* Getvgapalette256 gets the entire 256 color palette */
+/* PalBuf contains RGB values for all 256 colors      */
+/* R,G,B values range from 0 to 63	              */
+/* Usage:					      */
+/*  DacPalette256 dac256;			      */
+/*						      */
+/* getvgapalette256(&dac256);			      */
 int pascal getvgapalette256(MemReal *mr);
+
+/* Setvgapalette256 sets the entire 256 color palette */
+/* PalBuf contains RGB values for all 256 colors      */
+/* R,G,B values range from 0 to 63	              */
+/* Usage:					      */
+/*  DacPalette256 dac256;			      */
+/*						      */
+/* setvgapalette256(&dac256);			      */
 int pascal setvgapalette256(MemReal *mr);
 
 int init();
