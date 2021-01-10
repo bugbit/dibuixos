@@ -27,7 +27,12 @@ int grseterror(int errorcode)
 void dib_initgraph(int gdriver,int gmode)
 {
 	if (svgagdriver>=0)
+	{
+		if (gdriver==svgagdriver && gmode==svgagmode)
+			return;
+
 		closegraph();
+	}
 	initgraph(&gdriver,&gmode,"");
 	svgagdriver=gdriver;
 	svgagmode=gmode;
