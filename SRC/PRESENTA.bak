@@ -61,18 +61,18 @@ static int presen1()
 static int presen2()
 {
 	char titulo[sizeof(text2)+1];
-	int len=strlen(text2),k,y,by,j;
+	int len=strlen(text2),len2=len/2,k,j;
 
 	setwritemode(XOR_PUT);
 	cleardevice();
 	setrgbpalette(15,63,63,63);
-	for (y=medy+((medy-42) >> 1),k=1;k<len;k++)
+	for (k=1;k<len2;k++)
 	{
-		strncpy(titulo,text2,(by=(k >> 1)+(k & 1)));
-		strcpy(titulo+by,text2+len-(k >> 1));
+		strncpy(titulo,text2,k);
+		strcpy(titulo+k,text2+len-k);
 		outtextxy(medx,medy,titulo);
 
-		for(j=5;j-->0;)
+		for(j=10;j-->0;)
 		{
 			WaitForRetrace();
 			if (canceled)
@@ -80,7 +80,7 @@ static int presen2()
 		}
 		outtextxy(medx,medy,titulo);
 	}
-   outtextxy(medx,medy,text2);
+	outtextxy(medx,medy,text2);
 	setwritemode(COPY_PUT);
 
 	return RET_SUCESS;
