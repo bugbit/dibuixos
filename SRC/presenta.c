@@ -9,7 +9,7 @@ static char *text1[]=
 	NULL
 };
 
-static char *text2="My First Demo";
+static char text2[]="My First Demo";
 
 static int pre_init()
 {
@@ -23,6 +23,21 @@ static int pre_init()
 	}
 
 	return ret;
+}
+
+static int pre_fadeout()
+{
+	int x;
+
+	for(x=63;x>=0;x--)
+	{
+		if (canceled)
+			return RET_CANCEL;
+		WaitForRetrace();
+		setrgbpalette(15,x,x,x);
+	}
+
+	return RET_SUCESS;
 }
 
 static int presen1()
@@ -45,17 +60,20 @@ static int presen1()
 		y +=textheight(*text);
 	}
 	for(x=0;x<=63;x++)
+	{
+   	if (canceled)
+			return RET_CANCEL;
+		WaitForRetrace();
 		setrgbpalette(15,x,x,x);
+	}
 	for(x=0;x<=63;x++)
 	{
 		if (canceled)
 			return RET_CANCEL;
 		WaitForRetrace();
-		}
-	for(x=63;x>=0;x--)
-		setrgbpalette(15,x,x,x);
+	}
 
-	return RET_SUCESS;
+	return pre_fadeout();
 }
 
 static int presen2()
@@ -65,7 +83,7 @@ static int presen2()
 
 	setwritemode(XOR_PUT);
 	cleardevice();
-	setrgbpalette(15,63,63,63);
+	setvgapalette256(&pal);
 	for (k=1;k<len2;k++)
 	{
 		strncpy(titulo,text2,k);
@@ -83,7 +101,7 @@ static int presen2()
 	outtextxy(medx,medy,text2);
 	setwritemode(COPY_PUT);
 
-	return RET_SUCESS;
+	return pre_fadeout();
 }
 
 static void pre_deinit()
@@ -99,7 +117,9 @@ int presentacion()
 	{
 		if (issucess((ret=presen1())))
 		{
-			ret=presen2();
+			if (issucess((ret=presen2())))
+			{
+         }
 		}
 		/*
 		setrgbpalette(15,200,200,200);

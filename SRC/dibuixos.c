@@ -63,7 +63,7 @@ static void deinit()
 	if (svgagdriver>=0)
 		dib_closegraph();
 	if (keyb9_oldint)
-		setvect(9,keyb9_oldint);
+		setvect(0x9,keyb9_oldint);
 }
 
 int main()
@@ -74,9 +74,12 @@ int main()
 		ret=presentacion();
 
 	if (ret==RET_ERROR)
+	{
 		printf("%s\a\n",dib_error);
-
-	while (!canceled);
+      getch();
+	}
+	else
+		while (!canceled);
 
 	deinit();
 

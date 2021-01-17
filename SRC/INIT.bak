@@ -17,6 +17,16 @@ static int check()
 	svga256gdriver= installuserdriver("Svga256",NULL);
 	Twk256gdriver= installuserdriver("Twk256",NULL);
 
+	gdriver= VGA;
+	gmode=VGAHI;
+
+	initgraph(&gdriver,&gmode,"");
+
+	errorcode=graphresult();
+
+	if (errorcode!=grOk)
+		return grseterror(errorcode);
+
 	gdriver= svga256gdriver;
 	gmode=SVGA640x400x256;
 
@@ -51,7 +61,7 @@ int init()
 	if (issucess(ret))
 	{
 		keyb9_oldint=getvect(0x9);
-		setvect(9,keyb9_int);
+		setvect(0x9,keyb9_int);
 	}
 
    return ret;

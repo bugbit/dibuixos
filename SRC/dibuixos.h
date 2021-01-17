@@ -60,7 +60,7 @@ typedef struct _SimInt
 typedef unsigned char DacPalette256[256][3];
 
 //extern char dib_error[128];
-extern int svga256gdriver,Twk256gdriver;
+extern int svga16gdriver,svga256gdriver,Twk256gdriver;
 extern int maxx,maxy,medx,medy;
 extern void interrupt (*keyb9_oldint)();
 extern bool canceled;
