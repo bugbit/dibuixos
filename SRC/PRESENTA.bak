@@ -1,6 +1,10 @@
 #include "dibuixos.h"
 
+#define text3_lines sizeof(text3)/sizeof(char *)
+
 static MemReal pal;
+static int divy;
+
 static char *text1[]=
 {
 	"A",
@@ -15,9 +19,8 @@ static char *text3[]=
 {
 	"Develop",
 	"in",
-	"BC 4.52 Power Pack",
-	"DPMI 16",
-	NULL
+	"BC 4.52 + PowerPack for DOS",
+	"DPMI 16 bits"
 };
 
 static int pre_init()
@@ -47,6 +50,15 @@ static int pre_fadeout()
 	}
 
 	return RET_SUCESS;
+}
+
+static void pascal setcharsize(int mulx,int divx)
+{
+	switch (maxy)
+	{
+		case 199:setusercharsize(mulx,divx,3,10);break;
+		default:setusercharsize(mulx,divx,1,2);
+	}
 }
 
 static int presen1()
@@ -113,6 +125,72 @@ static int presen2()
 	return pre_fadeout();
 }
 
+static int pascal presen3_2(int x,int y)
+{
+  int num;
+  char **text=(char **) &text3;
+
+  if (canceled)
+		return RET_CANCEL;
+
+  WaitForRetrace();
+  for (num=text3_lines;num-->0;y += textheight(*text++))
+	 outtextxy(x,y,*text);
+
+  return EXIT_SUCCESS;
+}
+
+static int pascal presen3_1(int x,int y)
+{
+  int divx=textwidth("Y"),cars=strlen(text3[0]),num=(cars+text3_lines) >> 2;
+  double ancho,alto,ax=(double) divx/num,ay=((maxy==199) ? 0.31 : .5)*
+  (double) divy/num;
+  int ret=EXIT_SUCCESS,j;
+
+  ancho=alto=0;
+  do
+  {
+	 setusercharsize(ancho,divx,alto,divy);
+	 //bar(x,y,x+cars*ancho,y+MaxDibujos*divy);
+	 if (isnosucess((ret=presen3_2(x,y))))
+		return ret;
+
+	 for(j=5;j-->0;)
+	 {
+		WaitForRetrace();
+		if (canceled)
+			return RET_CANCEL;
+	 }
+
+	 if (isnosucess((ret=presen3_2(x,y))))
+		return ret;
+
+	 ancho += ax;
+	 alto += ay;
+  } while (--num>=0);
+  presen3_2(x,y);
+
+  return ret;
+}
+
+static int presen3()
+{
+	int y;
+
+	setwritemode(XOR_PUT);
+	cleardevice();
+	setvgapalette256(&pal);
+	settextstyle(SIMPLEX_FONT,HORIZ_DIR,USER_CHAR_SIZE);
+	setcharsize(2,1);
+	divy=textheight("A");
+	y=(maxy-((text3_lines+4)*divy)) >> 1;
+	settextjustify(CENTER_TEXT,CENTER_TEXT);
+	presen3_1(((maxx-textwidth(text3[2])) >> 1),y+(divy << 1));
+	setwritemode(COPY_PUT);
+
+	return pre_fadeout();
+}
+
 static void pre_deinit()
 {
 	mrfree(&pal);
@@ -128,7 +206,10 @@ int presentacion()
 		{
 			if (issucess((ret=presen2())))
 			{
-         }
+				if (issucess((ret=presen3())))
+				{
+				}
+			}
 		}
 		/*
 		setrgbpalette(15,200,200,200);
