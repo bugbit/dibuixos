@@ -7,3 +7,5 @@ MIDI: Opened device:win32
 DOS keyboard layout loaded with main language code SP for layout sp
 DOSBox has switched to max cycles, because of the setting: cycles=auto.
 If the game runs too fast, try a fixed cycles amount in DOSBox's options.
+Exit to error: Corrupt MCB chain
+

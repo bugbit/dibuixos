@@ -11,6 +11,15 @@ static char *text1[]=
 
 static char text2[]="My First Demo";
 
+static char *text3[]=
+{
+	"Develop",
+	"in",
+	"BC 4.52 Power Pack",
+	"DPMI 16",
+	NULL
+};
+
 static int pre_init()
 {
 	int ret=mrealloc(&pal,sizeof(DacPalette256));
@@ -34,7 +43,7 @@ static int pre_fadeout()
 		if (canceled)
 			return RET_CANCEL;
 		WaitForRetrace();
-		setrgbpalette(15,x,x,x);
+		setrgbpalette(WHITE,x,x,x);
 	}
 
 	return RET_SUCESS;
@@ -46,8 +55,8 @@ static int presen1()
 	int htext;
 	int y,x;
 
-	setrgbpalette(15,0,0,0);
-	setcolor(15);
+	setrgbpalette(WHITE,0,0,0);
+	setcolor(WHITE);
 	settextjustify(CENTER_TEXT,CENTER_TEXT);
 	settextstyle(SIMPLEX_FONT,HORIZ_DIR,8);
 	for(htext=0,text=text1;*text;)
@@ -61,10 +70,10 @@ static int presen1()
 	}
 	for(x=0;x<=63;x++)
 	{
-   	if (canceled)
+		if (canceled)
 			return RET_CANCEL;
 		WaitForRetrace();
-		setrgbpalette(15,x,x,x);
+		setrgbpalette(WHITE,x,x,x);
 	}
 	for(x=0;x<=63;x++)
 	{

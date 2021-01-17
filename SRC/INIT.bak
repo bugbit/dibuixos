@@ -30,6 +30,8 @@ static int check()
 	gdriver= svga256gdriver;
 	gmode=SVGA640x400x256;
 
+   closegraph();
+
 	initgraph(&gdriver,&gmode,"");
 
 	errorcode=graphresult();

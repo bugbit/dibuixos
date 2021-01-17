@@ -57,6 +57,7 @@ typedef struct _SimInt
 	unsigned int ss;
 } SimInt;
 
+typedef unsigned char DacPalette16[16][3];
 typedef unsigned char DacPalette256[256][3];
 
 //extern char dib_error[128];
@@ -79,6 +80,24 @@ void dib_closegraph();
 
 void WaitForRetrace();
 
+/* Getvgapalette16 gets the entire 16 color palette */
+/* PalBuf contains RGB values for all 16 colors     */
+/* R,G,B values range from 0 to 63	            */
+/* Usage: 					    */ 
+/*  DacPalette16 dac16;                             */
+/*						    */
+/*  getvgapalette(&dac16);			    */
+bool pascal getvgapalette16(MemReal *mr);
+
+/* Setvgapalette16 sets the entire 16 color palette */
+/* PalBuf contains RGB values for all 16 colors     */
+/* R,G,B values range from 0 to 63	            */
+/* Usage: 					    */
+/*  DacPalette16 dac16;                             */
+/*						    */
+/*  setvgapalette(&dac16);			    */
+bool pascal setvgapalette16(MemReal *mr);
+
 /* Getvgapalette256 gets the entire 256 color palette */
 /* PalBuf contains RGB values for all 256 colors      */
 /* R,G,B values range from 0 to 63	              */
@@ -86,7 +105,7 @@ void WaitForRetrace();
 /*  DacPalette256 dac256;			      */
 /*						      */
 /* getvgapalette256(&dac256);			      */
-int pascal getvgapalette256(MemReal *mr);
+bool pascal getvgapalette256(MemReal *mr);
 
 /* Setvgapalette256 sets the entire 256 color palette */
 /* PalBuf contains RGB values for all 256 colors      */
@@ -95,7 +114,7 @@ int pascal getvgapalette256(MemReal *mr);
 /*  DacPalette256 dac256;			      */
 /*						      */
 /* setvgapalette256(&dac256);			      */
-int pascal setvgapalette256(MemReal *mr);
+bool pascal setvgapalette256(MemReal *mr);
 
 int init();
 int presentacion();
