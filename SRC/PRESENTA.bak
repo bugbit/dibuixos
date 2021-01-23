@@ -1,6 +1,7 @@
 #include "dibuixos.h"
 
 #define text3_lines sizeof(text3)/sizeof(char *)
+#define text4_lines sizeof(text4)/sizeof(char *)
 
 static MemReal pal;
 static int divy;
@@ -21,6 +22,13 @@ static char *text3[]=
 	"in",
 	"BC 4.52 + PowerPack for DOS",
 	"DPMI 16 bits"
+};
+
+static char *text4[]=
+{
+	"Code",
+	"By",
+   "Oscar Hernandez Bano"
 };
 
 static int pre_init()
@@ -52,13 +60,53 @@ static int pre_fadeout()
 	return RET_SUCESS;
 }
 
+static void text_size(int *w,int *h,char **str,int numlines)
+{
+	int w1=0,h1=0;
+
+	for (;numlines-->0;str++)
+	{
+		int w2=textwidth(*str);
+		int h2=textheight(*str);
+
+		if (w2>w1)
+			w1=w2;
+		h1 += h2;
+	}
+
+	*w=w1;
+	*h=h1;
+}
+
+static int pascal writetext(int x,int y,char **text,int numlines)
+{
+  int num;
+
+  if (canceled)
+		return RET_CANCEL;
+
+  WaitForRetrace();
+  for (;numlines-->0;y += textheight(*text++))
+	 outtextxy(x,y,*text);
+
+  return EXIT_SUCCESS;
+}
+
 static void pascal setcharsize(int mulx,int divx)
 {
+	if (maxy>300)
+		setusercharsize(mulx,divx,2,10);
+	else if (maxy==199)
+		setusercharsize(mulx,divx,3,10);
+	else
+		setusercharsize(mulx,divx,1,2);
+	/*
 	switch (maxy)
 	{
 		case 199:setusercharsize(mulx,divx,3,10);break;
 		default:setusercharsize(mulx,divx,1,2);
 	}
+	*/
 }
 
 static int presen1()
@@ -125,68 +173,110 @@ static int presen2()
 	return pre_fadeout();
 }
 
-static int pascal presen3_2(int x,int y)
-{
-  int num;
-  char **text=(char **) &text3;
-
-  if (canceled)
-		return RET_CANCEL;
-
-  WaitForRetrace();
-  for (num=text3_lines;num-->0;y += textheight(*text++))
-	 outtextxy(x,y,*text);
-
-  return EXIT_SUCCESS;
-}
-
 static int pascal presen3_1(int x,int y)
 {
-  int divx=textwidth("Y"),cars=strlen(text3[0]),num=(cars+text3_lines) >> 2;
-  double ancho,alto,ax=(double) divx/num,ay=((maxy==199) ? 0.31 : .5)*
-  (double) divy/num;
-  int ret=EXIT_SUCCESS,j;
+  int steps=30,i,ret=EXIT_SUCCESS,j;
 
-  ancho=alto=0;
-  do
+  for(i=1;i<steps;i++)
   {
-	 setusercharsize(ancho,divx,alto,divy);
+	 setusercharsize(i,steps,i,steps);
 	 //bar(x,y,x+cars*ancho,y+MaxDibujos*divy);
-	 if (isnosucess((ret=presen3_2(x,y))))
+	 if (isnosucess((ret=writetext(x,y,text3,text3_lines))))
 		return ret;
 
-	 for(j=5;j-->0;)
+	 for(j=10;j-->0;)
 	 {
 		WaitForRetrace();
 		if (canceled)
 			return RET_CANCEL;
 	 }
 
-	 if (isnosucess((ret=presen3_2(x,y))))
+	 if (isnosucess((ret=writetext(x,y,text3,text3_lines))))
 		return ret;
 
-	 ancho += ax;
-	 alto += ay;
-  } while (--num>=0);
-  presen3_2(x,y);
+  };
+  ret=writetext(x,y,text3,text3_lines);
 
   return ret;
 }
 
 static int presen3()
 {
-	int y;
+	int w,h,j;
 
 	setwritemode(XOR_PUT);
+	settextstyle(SIMPLEX_FONT,HORIZ_DIR,3);
+	settextjustify(LEFT_TEXT,TOP_TEXT);
 	cleardevice();
 	setvgapalette256(&pal);
-	settextstyle(SIMPLEX_FONT,HORIZ_DIR,USER_CHAR_SIZE);
-	setcharsize(2,1);
-	divy=textheight("A");
-	y=(maxy-((text3_lines+4)*divy)) >> 1;
-	settextjustify(CENTER_TEXT,CENTER_TEXT);
-	presen3_1(((maxx-textwidth(text3[2])) >> 1),y+(divy << 1));
+	text_size(&w,&h,text3,text3_lines);
+	presen3_1((maxx-w)/2,(maxy-h)/2);
 	setwritemode(COPY_PUT);
+	for(j=15;j-->0;)
+	{
+		WaitForRetrace();
+		if (canceled)
+			return RET_CANCEL;
+	}
+
+	return pre_fadeout();
+}
+
+static int presen4_text_init(int salto)
+{
+	int i=text4_lines;
+	char **str=text4,*str1;
+
+	for(;i-->0;*str++)
+		for(str1=*str;*str1;str1++)
+			if (*str1!=' ')
+				*str1 -= salto;
+}
+
+static int presen4_text_salto1()
+{
+	int i=text4_lines;
+	char **str=text4,*str1;
+
+	for(;i-->0;*str++)
+		for(str1=*str;*str1;str1++)
+			if (*str1!=' ')
+				(*str1)++;
+}
+
+static int presen4()
+{
+	int w,h,x,y,j,salto=(int)('A'-' ')+1;
+
+	setwritemode(XOR_PUT);
+	settextstyle(SIMPLEX_FONT,HORIZ_DIR,3);
+	settextjustify(LEFT_TEXT,TOP_TEXT);
+	cleardevice();
+	setvgapalette256(&pal);
+	text_size(&w,&h,text4,text4_lines);
+	presen4_text_init(salto);
+	x=(maxx-w)/2;
+	y=(maxy-h)/2;
+	while (salto-->0)
+	{
+		writetext(x,y,text4,text4_lines);
+		for(j=10;j-->0;)
+		{
+			WaitForRetrace();
+			if (canceled)
+				return RET_CANCEL;
+		}
+		writetext(x,y,text4,text4_lines);
+		presen4_text_salto1();
+	}
+   writetext(x,y,text4,text4_lines);
+	setwritemode(COPY_PUT);
+	for(j=15;j-->0;)
+	{
+		WaitForRetrace();
+		if (canceled)
+			return RET_CANCEL;
+	}
 
 	return pre_fadeout();
 }
@@ -208,6 +298,9 @@ int presentacion()
 			{
 				if (issucess((ret=presen3())))
 				{
+					if (issucess((ret=presen4())))
+					{
+					}
 				}
 			}
 		}

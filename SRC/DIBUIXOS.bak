@@ -1,122 +1,87 @@
-#ifndef	__DIBUIXOS_H
+#include "dibuixos.h"
 
-#define	__DIBUIXOS_H
+static char dib_error[128];
+int svga256gdriver,Twk256gdriver,svgagdriver=-1,svgagmode=-1;
+bool canceled;
+void interrupt (*keyb9_oldint)()=NULL;
+int maxx,maxy,medx,medy;
 
-#include <dos.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <mem.h>
-#include <graphics.h>
-#include "SVGA256.H"
-#include "TWK256.H"
-
-#pragma hdrstop
-
-#define	TRUE	1
-#define	FALSE	0
-
-#define	RET_SUCESS		0
-#define	RET_ERROR		-1
-#define	RET_EXIT		-2
-#define	RET_CANCEL		-3
-
-#define	issucess(r)		(r>=RET_SUCESS)
-#define	isnosucess(r)	(r<RET_SUCESS)
-
-#define	mrealloc(mr,size)	mreallocpar(mr,size >> 4)
-
-typedef int bool;
-
-typedef struct _MemReal
+int seterror(char *fmt,...)
 {
-	unsigned int realseg;
-	unsigned int selector;
-   void far *ptr;
-} MemReal;
+	va_list args;
+	va_start (args, fmt);
 
-typedef struct _SimInt
+	vsprintf (dib_error,fmt, args);
+	va_end (args);
+
+	return RET_ERROR;
+}
+
+int grseterror(int errorcode)
 {
-	unsigned long edi;
-	unsigned long esi;
-	unsigned long ebp;
-	unsigned long esp;
-	unsigned long ebx;
-	unsigned long edx;
-	unsigned long ecx;
-	unsigned long eax;
-	unsigned int flags;
-	unsigned int es;
-	unsigned int ds;
-	unsigned int fs;
-	unsigned int gs;
-	unsigned int ip;
-	unsigned int cs;
-	unsigned int sp;
-	unsigned int ss;
-} SimInt;
+	strncpy(dib_error,grapherrormsg(errorcode),sizeof(dib_error));
 
-typedef unsigned char DacPalette16[16][3];
-typedef unsigned char DacPalette256[256][3];
+	return RET_ERROR;
+}
 
-//extern char dib_error[128];
-extern int svga16gdriver,svga256gdriver,Twk256gdriver;
-extern int maxx,maxy,medx,medy;
-extern void interrupt (*keyb9_oldint)();
-extern bool canceled;
+void dib_initgraph(int gdriver,int gmode)
+{
+	if (svgagdriver>=0)
+	{
+		if (gdriver==svgagdriver && gmode==svgagmode)
+			return;
 
-bool check386();
-int _pascal mreallocpar(MemReal *mr,int paragraphs);
-int _pascal mrfree(MemReal *mr);
-int _pascal simint(SimInt *sim,int interruptNumber);
-int seterror(char *fmt,...);
-int grseterror(int errorcode);
-void interrupt keyb9_int();
-void dib_initgraph(int gdriver,int gmode);
-void dib_closegraph();
+		closegraph();
+	}
+	initgraph(&gdriver,&gmode,"");
+	svgagdriver=gdriver;
+	svgagmode=gmode;
+	maxx=getmaxx();
+	maxy=getmaxy();
+	medx=maxx/2;
+	medy=maxy/2;
+}
 
-// svgautil
+void dib_closegraph()
+{
+	if (svgagdriver>=0)
+		closegraph();
+	svgagdriver=-1;
+	svgagmode=-1;
+}
 
-void WaitForRetrace();
+void interrupt keyb9_int()
+{
+	if (inport(0x60)==1)
+		canceled=TRUE;
+	else
+		keyb9_oldint();
+}
 
-/* Getvgapalette16 gets the entire 16 color palette */
-/* PalBuf contains RGB values for all 16 colors     */
-/* R,G,B values range from 0 to 63	            */
-/* Usage: 					    */ 
-/*  DacPalette16 dac16;                             */
-/*						    */
-/*  getvgapalette(&dac16);			    */
-bool pascal getvgapalette16(MemReal *mr);
+static void deinit()
+{
+	if (svgagdriver>=0)
+		dib_closegraph();
+	if (keyb9_oldint)
+		setvect(0x9,keyb9_oldint);
+}
 
-/* Setvgapalette16 sets the entire 16 color palette */
-/* PalBuf contains RGB values for all 16 colors     */
-/* R,G,B values range from 0 to 63	            */
-/* Usage: 					    */
-/*  DacPalette16 dac16;                             */
-/*						    */
-/*  setvgapalette(&dac16);			    */
-bool pascal setvgapalette16(MemReal *mr);
+int main()
+{
+	int ret=init();
 
-/* Getvgapalette256 gets the entire 256 color palette */
-/* PalBuf contains RGB values for all 256 colors      */
-/* R,G,B values range from 0 to 63	              */
-/* Usage:					      */
-/*  DacPalette256 dac256;			      */
-/*						      */
-/* getvgapalette256(&dac256);			      */
-bool pascal getvgapalette256(MemReal *mr);
+	if (issucess(ret))
+		ret=presentacion();
 
-/* Setvgapalette256 sets the entire 256 color palette */
-/* PalBuf contains RGB values for all 256 colors      */
-/* R,G,B values range from 0 to 63	              */
-/* Usage:					      */
-/*  DacPalette256 dac256;			      */
-/*						      */
-/* setvgapalette256(&dac256);			      */
-bool pascal setvgapalette256(MemReal *mr);
+	if (ret==RET_ERROR)
+	{
+		printf("%s\a\n",dib_error);
+      getch();
+	}
+	else
+		while (!canceled);
 
-int init();
-int presentacion();
+	deinit();
 
-#endif
+	return EXIT_SUCCESS;
+}
