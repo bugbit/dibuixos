@@ -28,7 +28,7 @@ static char *text4[]=
 {
 	"Code",
 	"By",
-   "Oscar Hernandez Bano"
+	"Oscar Hernandez Bano"
 };
 
 static int pre_init()
@@ -244,6 +244,23 @@ static int presen4_text_salto1()
 				(*str1)++;
 }
 
+static int presen4_mattrix(int w,int h)
+{
+	int x,y;
+
+	dib_initgraph(VGA,VGAHI);
+	x=(maxx-w)/2;
+	y=(maxy-h)/2;
+	setactivepage(2);
+	settextstyle(SIMPLEX_FONT,HORIZ_DIR,3);
+	settextjustify(LEFT_TEXT,TOP_TEXT);
+	setcolor(GREEN);
+	writetext(x,y,text4,text4_lines);
+	setvisualpage(2);
+
+	return RET_SUCESS;
+}
+
 static int presen4()
 {
 	int w,h,x,y,j,salto=(int)('A'-' ')-1;
@@ -269,7 +286,7 @@ static int presen4()
 		writetext(x,y,text4,text4_lines);
 		presen4_text_salto1();
 	}
-   writetext(x,y,text4,text4_lines);
+	writetext(x,y,text4,text4_lines);
 	setwritemode(COPY_PUT);
 	for(j=15;j-->0;)
 	{
@@ -277,8 +294,22 @@ static int presen4()
 		if (canceled)
 			return RET_CANCEL;
 	}
+	for(j=63;j>=0;j--)
+	{
+		if (canceled)
+			return RET_CANCEL;
+		WaitForRetrace();
+		setrgbpalette(WHITE,j,255,255);
+	}
+	for(j=63;j>=0;j--)
+	{
+		if (canceled)
+			return RET_CANCEL;
+		WaitForRetrace();
+		setrgbpalette(WHITE,0,255,j);
+	}
 
-	return pre_fadeout();
+	return presen4_mattrix(w,h);
 }
 
 static void pre_deinit()
