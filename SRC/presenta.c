@@ -123,6 +123,7 @@ static int presen1()
 	  htext +=textheight(*text++);
 	x=medx;
 	y=(maxy-htext)/2;
+	WaitForRetrace();
 	for (text=text1;*text;text++)
 	{
 		outtextxy(x,y,*text);
@@ -150,13 +151,13 @@ static int presen2()
 	char titulo[sizeof(text2)+1];
 	int len=strlen(text2),len2=len/2,k,j;
 
-	setwritemode(XOR_PUT);
-	cleardevice();
 	setvgapalette256(&pal);
 	for (k=1;k<len2;k++)
 	{
 		strncpy(titulo,text2,k);
 		strcpy(titulo+k,text2+len-k);
+		WaitForRetrace();
+		cleardevice();
 		outtextxy(medx,medy,titulo);
 
 		for(j=15;j-->0;)
@@ -165,10 +166,10 @@ static int presen2()
 			if (canceled)
 				return RET_CANCEL;
 		}
-		outtextxy(medx,medy,titulo);
 	}
+	WaitForRetrace();
+	cleardevice();
 	outtextxy(medx,medy,text2);
-	setwritemode(COPY_PUT);
 
 	return pre_fadeout();
 }
@@ -180,7 +181,8 @@ static int pascal presen3_1(int x,int y)
   for(i=1;i<steps;i++)
   {
 	 setusercharsize(i,steps,i,steps);
-	 //bar(x,y,x+cars*ancho,y+MaxDibujos*divy);
+	 WaitForRetrace();
+	 cleardevice();
 	 if (isnosucess((ret=writetext(x,y,text3,text3_lines))))
 		return ret;
 
@@ -190,12 +192,7 @@ static int pascal presen3_1(int x,int y)
 		if (canceled)
 			return RET_CANCEL;
 	 }
-
-	 if (isnosucess((ret=writetext(x,y,text3,text3_lines))))
-		return ret;
-
   };
-  ret=writetext(x,y,text3,text3_lines);
 
   return ret;
 }
@@ -204,14 +201,11 @@ static int presen3()
 {
 	int w,h,j;
 
-	setwritemode(XOR_PUT);
 	settextstyle(SIMPLEX_FONT,HORIZ_DIR,3);
 	settextjustify(LEFT_TEXT,TOP_TEXT);
-	cleardevice();
 	setvgapalette256(&pal);
 	text_size(&w,&h,text3,text3_lines);
 	presen3_1((maxx-w)/2,(maxy-h)/2);
-	setwritemode(COPY_PUT);
 	for(j=15;j-->0;)
 	{
 		WaitForRetrace();
@@ -265,10 +259,8 @@ static int presen4()
 {
 	int w,h,x,y,j,salto=(int)('A'-' ')-1;
 
-	setwritemode(XOR_PUT);
 	settextstyle(SIMPLEX_FONT,HORIZ_DIR,3);
 	settextjustify(LEFT_TEXT,TOP_TEXT);
-	cleardevice();
 	setvgapalette256(&pal);
 	text_size(&w,&h,text4,text4_lines);
 	presen4_text_init(salto);
@@ -276,6 +268,8 @@ static int presen4()
 	y=(maxy-h)/2;
 	while (salto-->0)
 	{
+		WaitForRetrace();
+		cleardevice();
 		writetext(x,y,text4,text4_lines);
 		for(j=10;j-->0;)
 		{
@@ -283,11 +277,11 @@ static int presen4()
 			if (canceled)
 				return RET_CANCEL;
 		}
-		writetext(x,y,text4,text4_lines);
 		presen4_text_salto1();
 	}
+   WaitForRetrace();
+	cleardevice();
 	writetext(x,y,text4,text4_lines);
-	setwritemode(COPY_PUT);
 	for(j=15;j-->0;)
 	{
 		WaitForRetrace();
