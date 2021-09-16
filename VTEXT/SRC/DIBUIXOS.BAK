@@ -1,18 +1,20 @@
-#ifndef	__DIBUIXOS_H
+#include "dibuixos.h"
 
-#define	__DIBUIXOS_H
-
-#include <dos.h>
-#include <stdarg.h>
-
-#define	TRUE	1
-#define	FALSE	0
-
-#define	RET_SUCESS		0
-#define	RET_ERROR		-1
-#define	RET_EXIT		-2
-#define	RET_CANCEL		-3
+static char dib_error[128];
 
 
+int seterror(char *fmt,...)
+{
+	va_list args;
+	va_start (args, fmt);
 
-#endif
+	vsprintf (dib_error,fmt, args);
+	va_end (args);
+
+	return RET_ERROR;
+}
+
+int main()
+{
+	return EXIT_SUCCESS;
+}

@@ -16,5 +16,10 @@ int seterror(char *fmt,...)
 
 int main()
 {
+	asm {
+		mov ax,0x1a00
+		int 0x10
+
+	}
 	return EXIT_SUCCESS;
 }
