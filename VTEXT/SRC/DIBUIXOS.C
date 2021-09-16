@@ -16,10 +16,36 @@ int seterror(char *fmt,...)
 
 int main()
 {
+	/*
 	asm {
 		mov ax,0x1a00
 		int 0x10
 
 	}
+	*/
+
+
+	unsigned char far *memptr=(unsigned char far *) 0xB8000000;
+	int i=0;
+
+	for(i<0;i<32;i++)
+	{
+		*memptr++='A';
+		*memptr++=15;
+	}
+
+	getch();
+	asm	{
+		mov ax,0x1010
+		mov bx,15
+		mov cx,63
+		xor dx,dx
+		int 0x10
+	}
+	getch();
+
+
+
+
 	return EXIT_SUCCESS;
 }
