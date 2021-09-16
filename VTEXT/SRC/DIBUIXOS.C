@@ -13,3 +13,8 @@ int seterror(char *fmt,...)
 
 	return RET_ERROR;
 }
+
+int main()
+{
+	return EXIT_SUCCESS;
+}
