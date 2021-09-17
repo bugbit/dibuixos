@@ -9,6 +9,9 @@ TMP/
 *.elf
 *.swp
 
+# bak files
+*.bak
+
 # Linker output
 *.ilk
 *.map

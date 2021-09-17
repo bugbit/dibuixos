@@ -1,3 +1,8 @@
+//#include <dos.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "dibuixos.h"
 
 static char dib_error[128];
@@ -16,6 +21,19 @@ int seterror(char *fmt,...)
 
 int main()
 {
+	int ret=check();
+
+	if (issucess(ret))
+		ret=init();
+
+	if (ret==RET_ERROR)
+	{
+		printf("%s\a\n",dib_error);
+			getch();
+	}
+
+
+	getch();
 	/*
 	asm {
 		mov ax,0x1a00
@@ -24,7 +42,7 @@ int main()
 	}
 	*/
 
-
+	/*
 	unsigned char far *memptr=(unsigned char far *) 0xB8000000;
 	int i=0;
 
@@ -36,6 +54,9 @@ int main()
 
 	getch();
 	asm	{
+		mov bl,15
+		mov ax,0x1015
+		int 0x10
 		mov ax,0x1010
 		mov bx,15
 		mov cx,63
@@ -44,7 +65,7 @@ int main()
 	}
 	getch();
 
-
+	*/
 
 
 	return EXIT_SUCCESS;

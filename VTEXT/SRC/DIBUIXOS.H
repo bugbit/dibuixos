@@ -2,10 +2,6 @@
 
 #define	__DIBUIXOS_H
 
-#include <dos.h>
-#include <stdarg.h>
-#include <stdlib.h>
-
 #define	TRUE	1
 #define	FALSE	0
 
@@ -14,6 +10,13 @@
 #define	RET_EXIT		-2
 #define	RET_CANCEL		-3
 
+#define	issucess(r)		(r>=RET_SUCESS)
+#define	isnosucess(r)	(r<RET_SUCESS)
+
+typedef int bool;
+
+int check();
+int init();
 
 
 #endif
