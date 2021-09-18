@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <alloc.h>
+
 #include "dibuixos.h"
 
 static bool check386()
@@ -64,7 +67,20 @@ static void setMode80x50()
 
 int init()
 {
+	unsigned long freeini,freeend,memuse;
+
+	freeini=coreleft();
 	setMode80x50();
+	cputs("Set Mode 80x50\r\n");
+	freeend=coreleft();
+	memuse=freeend-freeini;
+	cprintf("He usado %8lu bytes\r\nQuedan %8lu bytes libres\r\n",memuse,freeend);
 
 	return RET_SUCESS;
+}
+
+void end()
+{
+	if (iscancel())
+		getch();
 }

@@ -12,11 +12,17 @@
 
 #define	issucess(r)		(r>=RET_SUCESS)
 #define	isnosucess(r)	(r<RET_SUCESS)
+#define	iscancel()	kbhit()
+
+#include <conio.h>
 
 typedef int bool;
 
 int check();
 int init();
+void end();
+
+extern bool canceled;
 
 
 #endif

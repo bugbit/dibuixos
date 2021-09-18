@@ -21,19 +21,25 @@ int seterror(char *fmt,...)
 
 int main()
 {
-	int ret=check();
+	int ret=check(),i;
 
 	if (issucess(ret))
 		ret=init();
 
-	if (ret==RET_ERROR)
+	for(i=0;i<800;i++)
 	{
-		printf("%s\a\n",dib_error);
-			getch();
+		sound(i);
+		delay(150);
+		nosound();
 	}
 
+	end();
 
-	getch();
+	if (ret==RET_ERROR)
+		cprintf("%s\a\n",dib_error);
+
+	//getch();
+	while(!iscancel());
 	/*
 	asm {
 		mov ax,0x1a00
