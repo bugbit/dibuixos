@@ -8,13 +8,17 @@ int check()
 
 int init()
 {
-	unsigned long freeini,freeend,memuse;
+	
+	initscr();
+	printw("Lines: %d Cols:%d",LINES,COLS);
+	getch();
 
 	return RET_SUCESS;
 }
 
 void end()
 {
+	endwin();
 	// if (iscancel())
 	// 	getch();
 }

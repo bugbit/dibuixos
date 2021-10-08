@@ -1,0 +1,34 @@
+# Project: Dibuixos
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = src/DBInit.o src/DBMain.o src/pch.o
+LINKOBJ  = src/DBInit.o src/DBMain.o src/pch.o
+LIBS     = -L"C:/Programas/Dev-Cpp/MinGW64/lib" -L"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -lpdcurses -g3
+INCS     = -I"C:/Programas/Dev-Cpp/MinGW64/include" -I"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"C:/Programas/Dev-Cpp/MinGW64/include" -I"C:/Programas/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Programas/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+BIN      = Dibuixos.exe
+CXXFLAGS = $(CXXINCS) -g3
+CFLAGS   = $(INCS) -g3 -include src/pch.h
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+src/DBInit.o: src/DBInit.c
+	$(CC) -c src/DBInit.c -o src/DBInit.o $(CFLAGS)
+
+src/DBMain.o: src/DBMain.c
+	$(CC) -c src/DBMain.c -o src/DBMain.o $(CFLAGS)
+
+src/pch.o: src/pch.c
+	$(CC) -c src/pch.c -o src/pch.o $(CFLAGS)

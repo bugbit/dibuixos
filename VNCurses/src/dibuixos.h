@@ -14,7 +14,7 @@
 #define	isnosucess(r)	(r<RET_SUCESS)
 #define	iscancel()	kbhit()
 
-typedef int bool;
+//typedef int bool;
 
 int check();
 int init();
