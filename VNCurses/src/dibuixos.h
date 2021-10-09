@@ -20,7 +20,7 @@ int check();
 int init();
 void end();
 
-extern bool canceled;
+//extern bool canceled;
 
 
 #endif

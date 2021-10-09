@@ -1,3 +1,6 @@
+#if WIN32
+#include "pch.h"
+#endif
 #include "dibuixos.h"
 
 int check()

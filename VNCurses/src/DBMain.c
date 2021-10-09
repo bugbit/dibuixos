@@ -1,5 +1,6 @@
-//#include <dos.h>
-
+#if WIN32
+#include "pch.h"
+#endif
 #include "dibuixos.h"
 
 static char dib_error[128];
