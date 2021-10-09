@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1633803842 source:/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/DBInit.c
+	"pch.h"
+	"dibuixos.h"
+
+1633798934 /home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/pch.h
+	<stdio.h>
+	<stdarg.h>
+	<stdio.h>
+	<stdlib.h>
+	<curses.h>
+
+1633798934 /home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/dibuixos.h
+
+1633799895 source:/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/DBMain.c
+	"pch.h"
+	"dibuixos.h"
+
+1633640871 source:/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/pch.c
+	"pch.h"
+

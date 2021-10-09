@@ -24,5 +24,7 @@ int main()
 	if (issucess(ret))
 		ret=init();
 
+	end();
+
 	return EXIT_SUCCESS;
 }

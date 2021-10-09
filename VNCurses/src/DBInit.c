@@ -11,9 +11,12 @@ int check()
 
 int init()
 {
-	
+	int y,x;
+
 	initscr();
-	printw("Lines: %d Cols:%d",LINES,COLS);
+	resizeterm(50,80);
+	getmaxyx(stdscr,y,x);
+	printw("Lines: %d Cols:%d\nMaxY : %d MaxX : %d",LINES,COLS,y,x);
 	getch();
 
 	return RET_SUCESS;
