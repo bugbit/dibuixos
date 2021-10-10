@@ -13,10 +13,15 @@ int init()
 {
 	int y,x;
 
+#if XCURSES
+	Xinitscr();
+#else
 	initscr();
+#endif
 	getmaxyx(stdscr,y,x);
 	printw("Lines: %d Cols:%d\nMaxY : %d MaxX : %d",LINES,COLS,y,x);
-	resizeterm(50,80);
+	/* Lines : 48 LINES : 128 */
+	resize_term(50,128);
 	getmaxyx(stdscr,y,x);
 	printw("Lines: %d Cols:%d\nMaxY : %d MaxX : %d",LINES,COLS,y,x);
 	getch();

@@ -1,0 +1,2 @@
+-I/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses
+-DXCURSES
