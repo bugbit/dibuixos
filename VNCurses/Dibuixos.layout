@@ -1,28 +1,10 @@
-[Editor_0]
-CursorCol=8
-CursorRow=13
-TopLine=1
-LeftChar=1
-[Editors]
-Order=1,3,4,0,2
-Focused=0
-[Editor_1]
-CursorCol=15
-CursorRow=26
-TopLine=1
-LeftChar=1
-[Editor_2]
-CursorCol=3
-CursorRow=17
-TopLine=1
-LeftChar=1
-[Editor_3]
-CursorCol=1
-CursorRow=1
-TopLine=1
-LeftChar=1
-[Editor_4]
-CursorCol=20
-CursorRow=5
-TopLine=1
-LeftChar=1
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<FileVersion major="1" minor="0" />
+	<ActiveTarget name="debug" />
+	<File name="src/DBInit.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="119" topLine="0" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>

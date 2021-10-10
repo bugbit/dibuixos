@@ -14,6 +14,8 @@ int init()
 	int y,x;
 
 	initscr();
+	getmaxyx(stdscr,y,x);
+	printw("Lines: %d Cols:%d\nMaxY : %d MaxX : %d",LINES,COLS,y,x);
 	resizeterm(50,80);
 	getmaxyx(stdscr,y,x);
 	printw("Lines: %d Cols:%d\nMaxY : %d MaxX : %d",LINES,COLS,y,x);
