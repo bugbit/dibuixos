@@ -60,7 +60,7 @@ AS       := as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=../build-$(ConfigurationName)/XDibuixos/up_src_DBInit.c$(ObjectSuffix) ../build-$(ConfigurationName)/XDibuixos/up_src_DBMain.c$(ObjectSuffix) ../build-$(ConfigurationName)/XDibuixos/up_src_pch.c$(ObjectSuffix) 
+Objects0=../build-$(ConfigurationName)/XDibuixos/up_src_DBInit.c$(ObjectSuffix) ../build-$(ConfigurationName)/XDibuixos/up_src_DBMain.c$(ObjectSuffix) ../build-$(ConfigurationName)/XDibuixos/up_src_pch.c$(ObjectSuffix) ../build-$(ConfigurationName)/XDibuixos/up_src_DBpresen.c$(ObjectSuffix) 
 
 
 
@@ -114,6 +114,14 @@ PreBuild:
 
 ../build-$(ConfigurationName)/XDibuixos/up_src_pch.c$(PreprocessSuffix): ../src/pch.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/XDibuixos/up_src_pch.c$(PreprocessSuffix) ../src/pch.c
+
+../build-$(ConfigurationName)/XDibuixos/up_src_DBpresen.c$(ObjectSuffix): ../src/DBpresen.c ../build-$(ConfigurationName)/XDibuixos/up_src_DBpresen.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/DBpresen.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_src_DBpresen.c$(ObjectSuffix) $(IncludePath)
+../build-$(ConfigurationName)/XDibuixos/up_src_DBpresen.c$(DependSuffix): ../src/DBpresen.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT../build-$(ConfigurationName)/XDibuixos/up_src_DBpresen.c$(ObjectSuffix) -MF../build-$(ConfigurationName)/XDibuixos/up_src_DBpresen.c$(DependSuffix) -MM ../src/DBpresen.c
+
+../build-$(ConfigurationName)/XDibuixos/up_src_DBpresen.c$(PreprocessSuffix): ../src/DBpresen.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) ../build-$(ConfigurationName)/XDibuixos/up_src_DBpresen.c$(PreprocessSuffix) ../src/DBpresen.c
 
 
 -include ../build-$(ConfigurationName)/XDibuixos//*$(DependSuffix)

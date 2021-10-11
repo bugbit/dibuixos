@@ -672,41 +672,44 @@ the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
  */
+
 #include "dibuixos.h"
 
 static char dib_error[128];
 static void printerror();
 
-
-int seterror(char *fmt,...)
+int seterror(char* fmt, ...)
 {
-	va_list args;
-	va_start (args, fmt);
+    va_list args;
+    va_start(args, fmt);
 
-	vsprintf (dib_error,fmt, args);
-	va_end (args);
+    vsprintf(dib_error, fmt, args);
+    va_end(args);
 
-	return ERR;
+    return ERR;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-	int ret=check();
+    int ret = check();
 
-	if (issucess(ret))
-		ret=init(argc,argv);
-		
-	if (isnosucess(ret))
-		printerror();
-	end();
+    if(issucess(ret)) {
+	ret = init(argc, argv);
+	if(issucess(ret))
+	    ret = presentacion();
+    }
 
-	return EXIT_SUCCESS;
+    if(isnosucess(ret))
+	printerror();
+    end();
+
+    return EXIT_SUCCESS;
 }
 
 static void printerror()
 {
-	attron(COLOR_PAIR(ERR_PAIR));
-	printw(dib_error);
-	refresh();
-	attroff(COLOR_PAIR(ERR_PAIR));
+    attron(COLOR_PAIR(ERR_PAIR));
+    printw(dib_error);
+    refresh();
+    attroff(COLOR_PAIR(ERR_PAIR));
 }

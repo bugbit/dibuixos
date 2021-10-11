@@ -670,55 +670,71 @@ into proprietary programs.  If your program is a subroutine library, you
 may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
-<https://www.gnu.org/licenses/why-not-lgpl.html>.
- */
+<https://www.gnu.org/licenses/why-not-lgpl.html>. 
+*/
 
 #include "dibuixos.h"
 
-static int init_curses(int argc, char* argv[]);
+typedef struct{
+	chtype car;
+	int x,y;
+} PRESEN1;
 
-int check()
+static char *text1[]=
 {
-    return OK;
+	"A",
+	"Microbyt",
+	"production",
+	NULL
+};
+
+static int presen1_len;
+static PRESEN1 *presen1;
+
+static int pre_init();
+static void pre_done();
+
+int presentacion()
+{
+	int ret= pre_init();
+	
+	pre_done();
+	
+	return ret;
 }
 
-int init(int argc, char* argv[])
+static int pre_init()
 {
-    int ret = init_curses(argc, argv);
-
-    if(issucess(ret)) {
-    }
-
-    return ret;
+	chtype t/*=mvinch(0,100)*/;
+	int len,x,y;
+	PRESEN1 *p;
+	
+	for(y=len=0;y<LINES;y++)
+	{
+		for(x=0;x<COLS;x++)
+			if (mvinch(y,x)>32)
+				len++;
+	}
+	
+	presen1_len=len;
+	if ((p=presen1=calloc(len,sizeof(PRESEN1)))==NULL)
+		return seterror("not enough memory");
+		
+	for(y=0;y<LINES;y++)
+	{
+		for(x=0;x<COLS;x++)			
+			if ((t=mvinch(y,x))>32)
+			{
+				p->car=t;
+				p->y=y;
+				(p++)->x=x;
+			}
+	}
+	
+	return OK;
 }
 
-static int init_curses(int argc, char* argv[])
+void pre_done()
 {
-#if XCURSES
-    Xinitscr(argc, argv);
-#else
-    initscr();
-#endif
-    noecho();
-    start_color(); /* Start color 			*/
-    init_pair(ERR_PAIR, COLOR_RED, COLOR_BLACK);
-
-    printw("ncurses has been initialized\n");
-#if XCURSES
-    printw("xcurses version %s\n", curses_version());
-#else
-    printw("ncurses version %s\n", curses_version());
-#endif
-    // LINES = 48 COLS = 128
-    printw("Lines: %d Cols:%d\n", LINES, COLS);
-    refresh();
-
-    return OK;
-}
-
-void end()
-{
-    endwin();
-    // if (iscancel())
-    // 	getch();
+	FREE(presen1);
 }
