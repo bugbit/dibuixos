@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="Dibuixos" Database="" Version="10000">
-  <Project Name="Dibuixos" Path="Dibuixos.project" Active="Yes"/>
+  <Project Name="XDibuixos" Path="XDibuixos/XDibuixos.project" Active="Yes"/>
+  <Project Name="Dibuixos" Path="Dibuixos/Dibuixos.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Release" Selected="no">
       <Environment/>
       <Project Name="Dibuixos" ConfigName="Release"/>
+      <Project Name="XDibuixos" ConfigName="Release"/>
+      <Project Name="Dibuixos" ConfigName="Release"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Debug_X11" Selected="yes">
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
+      <Project Name="Dibuixos" ConfigName="Debug"/>
+      <Project Name="XDibuixos" ConfigName="Debug"/>
       <Project Name="Dibuixos" ConfigName="Debug"/>
     </WorkspaceConfiguration>
   </BuildMatrix>

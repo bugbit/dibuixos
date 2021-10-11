@@ -62,5 +62,4 @@ dkms.conf
 
 .codelite/
 
-Debug X11/
-Debug/
+build-Debug

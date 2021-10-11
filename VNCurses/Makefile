@@ -1,8 +1,8 @@
 .PHONY: clean All
 
 All:
-	@echo "----------Building project:[ Dibuixos - Debug ]----------"
-	@"$(MAKE)" -f  "Dibuixos.mk"
+	@echo "----------Building project:[ XDibuixos - Debug ]----------"
+	@cd "XDibuixos" && "$(MAKE)" -f  "XDibuixos.mk"
 clean:
-	@echo "----------Cleaning project:[ Dibuixos - Debug ]----------"
-	@"$(MAKE)" -f  "Dibuixos.mk" clean
+	@echo "----------Cleaning project:[ XDibuixos - Debug ]----------"
+	@cd "XDibuixos" && "$(MAKE)" -f  "XDibuixos.mk" clean

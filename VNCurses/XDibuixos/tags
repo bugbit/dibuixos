@@ -1,0 +1,8 @@
+__DIBUIXOS_H	/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/dibuixos.h	/^#define	__DIBUIXOS_H$/;"	macro	line:3
+ERR_PAIR	/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/dibuixos.h	/^#define ERR_PAIR     1$/;"	macro	line:5
+issucess	/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/dibuixos.h	/^#define	issucess(r)		(r==OK)$/;"	macro	line:7
+isnosucess	/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/dibuixos.h	/^#define	isnosucess(r)	(r==ERR)$/;"	macro	line:8
+iscancel	/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/dibuixos.h	/^#define	iscancel()	kbhit()$/;"	macro	line:9
+check	/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/dibuixos.h	/^int check();$/;"	prototype	line:11	signature:()	returns:int 
+init	/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/dibuixos.h	/^int init(int argc, char *argv[]);$/;"	prototype	line:12	signature:(int argc, char *argv[])	returns:int 
+end	/home/oscar/proyectos/oscar/retro/dibuixos/VNCurses/src/dibuixos.h	/^void end();$/;"	prototype	line:13	signature:()	returns:void 
